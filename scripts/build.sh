@@ -100,6 +100,7 @@ function setup_host() {
     echo "=====> running setup_host ..."
     sudo apt update
     sudo apt upgrade -y
+    sudo apt-get purge -y php8.*
     sudo apt install -y binutils debootstrap squashfs-tools xorriso grub-pc-bin grub-efi-amd64-bin mtools dosfstools unzip
     sudo mkdir -p chroot
 }

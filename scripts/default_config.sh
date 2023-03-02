@@ -52,7 +52,6 @@ function customize_image() {
     apt-transport-https \
     curl \
     vim \
-    nano \
     less
 
     # purge

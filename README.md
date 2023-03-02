@@ -47,7 +47,7 @@ sudo apt-get install \
 mkdir $HOME/live-cutefish-from-scratch
 ```
 
-## Bootstrap and Configure Ubuntu
+## Bootstrap and Configure Cutefish
 
 `debootstrap` is a program for generating OS images.  We install it into our `build system` to begin generating our ISO.
 
