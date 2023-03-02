@@ -1,10 +1,10 @@
-name: build-jammy
+name: build-cutefish
 
 on:
   push:
-    branches: [ master ]
+    branches: [ main ]
   pull_request:
-    branches: [ master ]
+    branches: [ main ]
   workflow_dispatch:
 
 jobs:
@@ -23,7 +23,7 @@ jobs:
       - name: Archive artifacts
         uses: actions/upload-artifact@v3
         with:
-          name: ubuntu-from-scratch
+          name: cutefish-from-scratch
           path: |
-            scripts/ubuntu-from-scratch.iso
+            scripts/cutefish-from-scratch.iso
             scripts/image/md5sum.txt

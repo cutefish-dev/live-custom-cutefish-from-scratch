@@ -14,7 +14,7 @@ DATE=`TZ="UTC" date +"%y%m%d-%H%M%S"`
 function help() {
     # if $1 is set, use $1 as headline message in help()
     if [ -z ${1+x} ]; then
-        echo -e "This script builds a bootable ubuntu ISO image"
+        echo -e "This script builds a bootable cutefish ISO image"
         echo -e
     else
         echo -e $1
@@ -151,10 +151,10 @@ function build_iso() {
     rm -f image/install/memtest86-usb.zip
 
     # grub
-    touch image/ubuntu
+    touch image/cutefish
     cat <<EOF > image/isolinux/grub.cfg
 
-search --set=root --file /ubuntu
+search --set=root --file /cutefish
 
 insmod all_video
 

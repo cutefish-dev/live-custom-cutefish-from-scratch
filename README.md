@@ -1,10 +1,10 @@
-# How to create a custom Ubuntu live from scratch
+# How to create a custom Cutefish live from scratch
 
 <p align="center">
    <img src="images/live-boot.png">
 </p>
 
-This procedure shows how to create a **bootable** and **installable** Ubuntu Live (along with the automatic hardware detection and configuration) from scratch.  The steps described below are also available in this repo in the `/scripts` directory.
+This procedure shows how to create a **bootable** and **installable** Cutefish Live (along with the automatic hardware detection and configuration) from scratch.  The steps described below are also available in this repo in the `/scripts` directory.
 
 ## Authors
 
@@ -15,7 +15,7 @@ See also the list of [contributors](CONTRIBUTORS.txt) who participated in this p
 
 ## Ways of Using this Tutorial
 
-* (Recommended) follow the directions step by step below to understand how to build an Ubuntu ISO.
+* (Recommended) follow the directions step by step below to understand how to build an Cutefish ISO.
 * Run the `build.sh` script in the `scripts` directory after checking this repo out locally.
 * Fork this repo and run the github action `build`.  This will generate an ISO in your github account.
 
@@ -44,7 +44,7 @@ sudo apt-get install \
 ```
 
 ```shell
-mkdir $HOME/live-ubuntu-from-scratch
+mkdir $HOME/live-cutefish-from-scratch
 ```
 
 ## Bootstrap and Configure Ubuntu
@@ -58,7 +58,7 @@ mkdir $HOME/live-ubuntu-from-scratch
      --arch=amd64 \
      --variant=minbase \
      focal \
-     $HOME/live-ubuntu-from-scratch/chroot \
+     $HOME/live-cutefish-from-scratch/chroot \
      http://us.archive.ubuntu.com/ubuntu/
   ```
   
@@ -67,9 +67,9 @@ mkdir $HOME/live-ubuntu-from-scratch
 * Configure external mount points
   
   ```shell
-  sudo mount --bind /dev $HOME/live-ubuntu-from-scratch/chroot/dev
+  sudo mount --bind /dev $HOME/live-cutefish-from-scratch/chroot/dev
   
-  sudo mount --bind /run $HOME/live-ubuntu-from-scratch/chroot/run
+  sudo mount --bind /run $HOME/live-cutefish-from-scratch/chroot/run
   ```
 
   As we will be updating and installing packages (grub among them), these mount points are necessary inside the chroot environment, so we are able to finish the installation without errors.
@@ -85,7 +85,7 @@ From this point we will be configuring the `live system`.
 1. **Access chroot environment**
 
    ```shell
-   sudo chroot $HOME/live-ubuntu-from-scratch/chroot
+   sudo chroot $HOME/live-cutefish-from-scratch/chroot
    ```
 
 2. **Configure mount points, home and locale**
@@ -107,7 +107,7 @@ From this point we will be configuring the `live system`.
 3. **Set a custom hostname**
 
    ```shell
-   echo "ubuntu-fs-live" > /etc/hostname
+   echo "cutefish-fs-live" > /etc/hostname
    ```
 
 4. **Configure apt sources.list**
@@ -403,9 +403,9 @@ From this point we will be configuring the `live system`.
 ## Unbind mount points
 
 ```shell
-sudo umount $HOME/live-ubuntu-from-scratch/chroot/dev
+sudo umount $HOME/live-cutefish-from-scratch/chroot/dev
 
-sudo umount $HOME/live-ubuntu-from-scratch/chroot/run
+sudo umount $HOME/live-cutefish-from-scratch/chroot/run
 ```
 
 ## Create the CD image directory and populate it
@@ -415,7 +415,7 @@ We are now back in our `build environment` after setting up our `live system` an
 1. Access build directory
 
    ```shell
-   cd $HOME/live-ubuntu-from-scratch
+   cd $HOME/live-cutefish-from-scratch
    ```
 
 2. Create directories
@@ -453,13 +453,13 @@ We are now back in our `build environment` after setting up our `live system` an
    1. Access build directory
 
       ```shell
-      cd $HOME/live-ubuntu-from-scratch
+      cd $HOME/live-cutefish-from-scratch
       ```
 
    2. Create base point access file for grub
 
       ```shell
-      touch image/ubuntu
+      touch image/cutefish
       ```
 
    3. Create image/isolinux/grub.cfg
@@ -467,19 +467,19 @@ We are now back in our `build environment` after setting up our `live system` an
       ```shell
       cat <<EOF > image/isolinux/grub.cfg
 
-      search --set=root --file /ubuntu
+      search --set=root --file /cutefish
 
       insmod all_video
 
       set default="0"
       set timeout=30
 
-      menuentry "Try Ubuntu FS without installing" {
+      menuentry "Try Cutefish FS without installing" {
          linux /casper/vmlinuz boot=casper nopersistent toram quiet splash ---
          initrd /casper/initrd
       }
 
-      menuentry "Install Ubuntu FS" {
+      menuentry "Install Cutefish FS" {
          linux /casper/vmlinuz boot=casper only-ubiquity quiet splash ---
          initrd /casper/initrd
       }
@@ -511,7 +511,7 @@ remove packages specified in `filesystem.manifest` that are *not* listed in `fil
 1. Access build directory
 
    ```shell
-   cd $HOME/live-ubuntu-from-scratch
+   cd $HOME/live-cutefish-from-scratch
    ```
 
 2. Generate manifest
@@ -539,7 +539,7 @@ After everything has been installed and preconfigured in the **chrooted** enviro
 1. Access build directory
 
    ```shell
-   cd $HOME/live-ubuntu-from-scratch
+   cd $HOME/live-cutefish-from-scratch
    ```
 
 2. Create squashfs
@@ -564,14 +564,14 @@ After everything has been installed and preconfigured in the **chrooted** enviro
 1. Access build directory
 
    ```shell
-   cd $HOME/live-ubuntu-from-scratch
+   cd $HOME/live-cutefish-from-scratch
    ```
 
 2. Create file image/README.diskdefines
 
    ```shell
    cat <<EOF > image/README.diskdefines
-   #define DISKNAME  Ubuntu from scratch
+   #define DISKNAME  Cutefish from scratch
    #define TYPE  binary
    #define TYPEbinary  1
    #define ARCH  amd64
@@ -588,7 +588,7 @@ After everything has been installed and preconfigured in the **chrooted** enviro
 1. Access image directory
 
    ```shell
-   cd $HOME/live-ubuntu-from-scratch/image
+   cd $HOME/live-cutefish-from-scratch/image
    ```
 
 2. Create a grub UEFI image
@@ -646,8 +646,8 @@ After everything has been installed and preconfigured in the **chrooted** enviro
       -as mkisofs \
       -iso-level 3 \
       -full-iso9660-filenames \
-      -volid "Ubuntu from scratch" \
-      -output "../ubuntu-from-scratch.iso" \
+      -volid "Cutefish from scratch" \
+      -output "../cutefish-from-scratch.iso" \
       -eltorito-boot boot/grub/bios.img \
          -no-emul-boot \
          -boot-load-size 4 \
@@ -690,13 +690,13 @@ After everything has been installed and preconfigured in the **chrooted** enviro
    MENU COLOR tabmsg       31;40   #30ffffff #00000000 std
 
    LABEL linux
-    MENU LABEL Try Ubuntu FS
+    MENU LABEL Try Cutefish FS
     MENU DEFAULT
     KERNEL /casper/vmlinuz
     APPEND initrd=/casper/initrd boot=casper
 
    LABEL linux
-    MENU LABEL Try Ubuntu FS (nomodeset)
+    MENU LABEL Try Cutefish FS (nomodeset)
     MENU DEFAULT
     KERNEL /casper/vmlinuz
     APPEND initrd=/casper/initrd boot=casper nomodeset
@@ -718,8 +718,8 @@ After everything has been installed and preconfigured in the **chrooted** enviro
       -as mkisofs \
       -iso-level 3 \
       -full-iso9660-filenames \
-      -volid "Ubuntu from scratch" \
-      -output "../ubuntu-from-scratch.iso" \
+      -volid "Cutefish from scratch" \
+      -output "../cutefish-from-scratch.iso" \
     -isohybrid-mbr /usr/lib/ISOLINUX/isohdpfx.bin \
     -eltorito-boot \
         isolinux/isolinux.bin \
@@ -732,7 +732,7 @@ After everything has been installed and preconfigured in the **chrooted** enviro
         -no-emul-boot \
         -isohybrid-gpt-basdat \
     -append_partition 2 0xef EFI/boot/efiboot.img \
-      "$HOME/live-ubuntu-from-scratch/image"
+      "$HOME/live-cutefish-from-scratch/image"
    ```
 
 ## Make a bootable USB image
@@ -740,7 +740,7 @@ After everything has been installed and preconfigured in the **chrooted** enviro
 It is simple and easy, using "dd"
 
 ```shell
-sudo dd if=ubuntu-from-scratch.iso of=<device> status=progress oflag=sync
+sudo dd if=cutefish-from-scratch.iso of=<device> status=progress oflag=sync
 ```
 
 ## Summary
@@ -753,7 +753,7 @@ Please read [CONTRIBUTING.md](CONTRIBUTING.md) for details on our code of conduc
 
 ## Versioning
 
-We use [GitHub](https://github.com/mvallim/live-custom-ubuntu-from-scratch) for versioning. For the versions available, see the [tags on this repository](https://github.com/mvallim/live-custom-ubuntu-from-scratch/tags).
+We use [GitHub](https://github.com/cutefish-dev/live-custom-cutefish-from-scratch) for versioning. For the versions available, see the [tags on this repository](https://github.com/cutefish-dev/live-custom-cutefish-from-scratch/tags).
 
 ## License
 

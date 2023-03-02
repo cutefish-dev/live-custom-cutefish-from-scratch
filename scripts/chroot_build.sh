@@ -12,7 +12,7 @@ CMD=(setup_host install_pkg finish_up)
 function help() {
     # if $1 is set, use $1 as headline message in help()
     if [ -z ${1+x} ]; then
-        echo -e "This script builds Ubuntu from scratch"
+        echo -e "This script builds Cutefish from scratch"
         echo -e
     else
         echo -e $1
